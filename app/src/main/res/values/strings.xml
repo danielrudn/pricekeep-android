@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">PriceKeep</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="login_text">Login</string>
+    <string name="signup_text">Sign Up</string>
+
+    <array name="update_intervals">
+        <item>day</item>
+        <item>12 hours</item>
+        <item>hour</item>
+        <item>30 minutes</item>
+    </array>
+</resources>

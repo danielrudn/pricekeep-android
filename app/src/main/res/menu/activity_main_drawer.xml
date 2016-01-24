@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_all_items" android:icon="@drawable/ic_list_black_24dp"
+            android:title="All Items" />
+        <item android:id="@+id/nav_recently_added_items" android:icon="@drawable/ic_menu_gallery"
+            android:title="Recently Added" />
+        <item android:id="@+id/nav_price_changed_items" android:icon="@drawable/ic_menu_slideshow"
+            android:title="Price Changed" />
+
+        <item android:title="Other">
+            <menu>
+                <item android:id="@+id/nav_share" android:icon="@drawable/ic_menu_share"
+                    android:title="Share" />
+                <item android:id="@+id/nav_settings" android:icon="@drawable/ic_settings_black_24dp"
+                    android:title="Settings" />
+            </menu>
+        </item>
+    </group>
+
+</menu>

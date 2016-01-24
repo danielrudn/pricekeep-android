@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".views.activities.SingleItemActivity"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/test"
+        android:transitionName="mainCardTransition"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        card_view:cardElevation="6dp"
+        card_view:cardBackgroundColor="#FFFFFF"
+        card_view:cardCornerRadius="4dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackground">
+
+                    <ImageView
+                        android:id="@+id/list_item_image"
+                        android:transitionName="imageTransition"
+                        android:layout_width="match_parent"
+                        android:layout_height="192dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_list_black_24dp" />
+
+                    <TextView
+                        android:id="@+id/list_item_name"
+                        android:transitionName="nameTransition"
+                        android:layout_below="@id/list_item_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textColor="#000000"
+                        android:textSize="16dp"
+                        android:text="Item Name"/>
+
+                    <TextView
+                        android:transitionName="lastCheckedTransition"
+                        android:id="@+id/last_checked_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/list_item_name"
+                        android:layout_margin="4dp"
+                        android:text="30 mins"/>
+
+                    <Button
+                        android:id="@+id/list_item_sitename"
+                        android:transitionName="siteNameTransition"
+                        android:minWidth="92dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="24dp"
+                        android:layout_below="@id/last_checked_text"
+                        android:background="@color/colorPrimary"
+                        android:textColor="#FFFFFF"
+                        android:textSize="12dp"
+                        android:text="AMAZON"
+                        style="?android:attr/borderlessButtonStyle"/>
+
+                    <TextView
+                        android:id="@+id/list_item_price"
+                        android:transitionName="priceTransition"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/list_item_name"
+                        android:layout_margin="8dp"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="24dp"
+                        android:textStyle="bold"
+                        android:text="$9.00"/>
+
+
+                </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        card_view:cardElevation="6dp"
+        card_view:cardBackgroundColor="#FFFFFF"
+        card_view:cardCornerRadius="4dp" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="16dp"
+            android:showDividers="middle"
+            android:dividerPadding="4dp"
+            android:divider="@android:drawable/divider_horizontal_textfield"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:textSize="16dp"
+                android:text="Options"/>
+
+            <Switch
+                android:id="@+id/notify_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:enabled="true"
+                android:textSize="18dp"
+                android:text="Notify on change"/>
+
+            <Button
+                android:onClick="deleteItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:textColor="@color/colorAccent"
+                android:gravity="left|center_vertical"
+                android:text="DELETE"
+                style="?android:borderlessButtonStyle"/>
+
+        </LinearLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</LinearLayout>
