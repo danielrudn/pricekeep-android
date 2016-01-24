@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.dr.pricekeep.R;
+import com.dr.pricekeep.backend.FirebaseBackend;
 import com.dr.pricekeep.views.activities.LoginActivity;
 import com.dr.pricekeep.views.activities.MainActivity;
 import com.firebase.client.Firebase;
@@ -31,7 +32,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void logout() {
-        new Firebase(MainActivity.FIREBASE_URL).unauth();
+        FirebaseBackend.getInstance(this.getActivity()).logout();
         startActivity(new Intent(this.getActivity(), LoginActivity.class));
         this.getActivity().finish();
     }

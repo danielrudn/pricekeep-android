@@ -16,7 +16,7 @@ public class User implements Parcelable {
 
                 @Override
                 public User createFromParcel(Parcel source) {
-                    return null;
+                    return new User(source.readString(), source.readString());
                 }
 
                 @Override
@@ -45,7 +45,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(email);
         dest.writeString(uuid.toString());
+        dest.writeString(email);
     }
 }

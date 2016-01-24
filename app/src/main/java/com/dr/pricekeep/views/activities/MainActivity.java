@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final String TAG = "PRICEKEEP";
 
     private MainPresenter mMainPresenter;
-
-    private Firebase mRef;
+    private TextView headerEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +42,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      //   startService(new Intent(this, NotificationService.class));
         mMainPresenter = new MainPresenterImpl(this);
         setContentView(R.layout.activity_main);
-        mRef = new Firebase(FIREBASE_URL);
+        this.initializeViews();
         mMainPresenter.initializeViews();
     }
 
-    public void initializeViews() {
+    private void initializeViews() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -66,13 +65,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         // set user info on drawer header
-        TextView headerEmail = (TextView)((NavigationView)drawer.findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.nav_drawer_email);
-        headerEmail.setText(mRef.getAuth().getProviderData().get("email").toString());
-        ImageView headerProfileImage = (ImageView)((NavigationView)drawer.findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.nav_drawer_image);
-        Picasso.with(this).load(mRef.getAuth().getProviderData().get("profileImageURL").toString()).resize(150,150).into(headerProfileImage);
+        headerEmail = (TextView)((NavigationView)drawer.findViewById(R.id.nav_view)).getHeaderView(0).findViewById(R.id.nav_drawer_email);
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+    }
+
+
+    public void setEmailText(String text) {
+        headerEmail.setText(text);
+    }
+
+    public void hideFAB() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.INVISIBLE);
+    }
+
+    public void showFAB() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -115,13 +126,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
-    public void hideFAB() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.INVISIBLE);
-    }
-
-    public void showFAB() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
-    }
 }

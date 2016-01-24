@@ -2,10 +2,9 @@ package com.dr.pricekeep.presenters;
 
 import android.content.Intent;
 
+import com.dr.pricekeep.backend.FirebaseBackend;
 import com.dr.pricekeep.models.Item;
-import com.dr.pricekeep.views.activities.MainActivity;
 import com.dr.pricekeep.views.activities.SingleItemActivity;
-import com.firebase.client.Firebase;
 
 public class SingleItemPresenterImpl implements SingleItemPresenter {
 
@@ -31,9 +30,7 @@ public class SingleItemPresenterImpl implements SingleItemPresenter {
 
     @Override
     public void deleteItem() {
-        Firebase ref = new Firebase(MainActivity.FIREBASE_URL);
-        ref.child(mItem.getUpdateQueuePath()).removeValue();
-        ref.child("users/" + ref.getAuth().getUid() + "/items/" + mItem.getUUID().toString()).removeValue();
+        FirebaseBackend.getInstance(mSingleItemActivity).getDatabase().deleteItem(mItem);
         mSingleItemActivity.finish();
     }
 

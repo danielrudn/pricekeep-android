@@ -5,12 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.dr.pricekeep.backend.FirebaseBackend;
+import com.dr.pricekeep.backend.PriceKeepBackend;
 import com.dr.pricekeep.R;
-import com.dr.pricekeep.views.activities.LoginActivity;
-import com.dr.pricekeep.views.activities.MainActivity;
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -18,10 +15,9 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        Firebase.setAndroidContext(this);
         // Check to see if user is logged in and start the right activity
-        Firebase mRef = new Firebase(MainActivity.FIREBASE_URL);
-        if(mRef.getAuth() == null) {
+        PriceKeepBackend priceKeepBackend = FirebaseBackend.getInstance(this);
+        if(!priceKeepBackend.isLoggedIn()) {
             // log in activity
             this.startActivity(new Intent(this, LoginActivity.class));
         } else {

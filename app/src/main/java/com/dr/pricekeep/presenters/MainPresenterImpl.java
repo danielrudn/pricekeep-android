@@ -9,6 +9,7 @@ import android.os.SystemClock;
 import android.view.MenuItem;
 
 import com.dr.pricekeep.R;
+import com.dr.pricekeep.backend.FirebaseBackend;
 import com.dr.pricekeep.services.NotificationBroadcastReceiver;
 import com.dr.pricekeep.services.NotificationService;
 import com.dr.pricekeep.views.activities.MainActivity;
@@ -31,15 +32,14 @@ public class MainPresenterImpl implements MainPresenter {
 
     @Override
     public void initializeViews() {
-        // TODO: send broadcast to NotificationBroadcastReciever to start notification service when user SIGNS UP/logs in
-        // set starting fragment to be a ListItemFragment
-        mMainActivity.initializeViews();
         Intent startIntent = mMainActivity.getIntent();
         if(startIntent.getStringExtra("notification") != null) {
             changeContentFragment(new NotifiedItemsFragment());
         } else {
             changeContentFragment(new AllItemsFragment());
         }
+        // set nav drawer data
+        mMainActivity.setEmailText(FirebaseBackend.getInstance(mMainActivity).getUser().getEmail());
     }
 
     @Override

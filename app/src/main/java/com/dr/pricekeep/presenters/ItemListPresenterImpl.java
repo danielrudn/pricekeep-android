@@ -1,28 +1,24 @@
 package com.dr.pricekeep.presenters;
 
 import android.content.Intent;
-import android.os.SystemClock;
+import android.util.Log;
 
-import com.dr.pricekeep.factories.ItemFactory;
-import com.dr.pricekeep.factories.UserFactory;
+import com.dr.pricekeep.backend.FirebaseBackend;
+import com.dr.pricekeep.backend.DatabaseListener;
+import com.dr.pricekeep.backend.PriceKeepDatabase;
 import com.dr.pricekeep.models.Item;
 import com.dr.pricekeep.models.User;
-import com.dr.pricekeep.views.activities.MainActivity;
 import com.dr.pricekeep.views.adapters.ItemAdapter;
 import com.dr.pricekeep.views.fragments.ListItemFragment;
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collection;
 
-public class ItemListPresenterImpl implements ItemListPresenter {
+public class ItemListPresenterImpl implements ItemListPresenter, DatabaseListener {
 
     private ListItemFragment mListItemFragment;
-    private Firebase mRef;
+    private PriceKeepDatabase database;
     private User mUser;
     private ItemAdapter mItemAdapter;
     // Items that are displayed in the view
@@ -34,39 +30,16 @@ public class ItemListPresenterImpl implements ItemListPresenter {
 
     public ItemListPresenterImpl(ListItemFragment fragment, int currentState) {
         mListItemFragment = fragment;
-        mRef = new Firebase(MainActivity.FIREBASE_URL);
-        mUser = UserFactory.fromAuthData(mRef.getAuth());
+        mUser = FirebaseBackend.getInstance(mListItemFragment.getActivity()).getUser();
         this.currentState = currentState;
+        database = FirebaseBackend.getInstance(mListItemFragment.getActivity()).getDatabase();
+        database.setListener(this);
     }
 
     @Override
     public void initializeItems() {
         // load items
-        mRef.child("users/" + mUser.getUUID() + "/items").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                itemList = new ArrayList<Item>();
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    Item mItem = ItemFactory.fromDataSnapshot(data);
-                    if(isItemValid(mItem)) {
-                        itemList.add(mItem);
-                    }
-                }
-                // set adapter
-                if(mItemAdapter == null) {
-                    mItemAdapter = new ItemAdapter(itemList);
-                    mListItemFragment.setItemAdapter(mItemAdapter);
-                } else {
-                    mItemAdapter.notifyDataSetChanged();
-                }
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
+        database.loadItems(mUser);
     }
 
     @Override
@@ -89,5 +62,28 @@ public class ItemListPresenterImpl implements ItemListPresenter {
         }
         // for all items
         return true;
+    }
+
+    @Override
+    public void onItemsLoaded(Collection<Item> items) {
+        itemList = new ArrayList<Item>();
+        // Add only items required by the state
+        for(Item item : items) {
+            if(isItemValid(item)) {
+                itemList.add(item);
+            }
+        }
+        // set adapter
+        if(mItemAdapter == null) {
+            mItemAdapter = new ItemAdapter(itemList);
+            mListItemFragment.setItemAdapter(mItemAdapter);
+        } else {
+            mItemAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onItemsLoadError(Exception e) {
+        Log.d(this.getClass().getSimpleName(), "onItemsLoadError Called\nException: " + e.toString());
     }
 }

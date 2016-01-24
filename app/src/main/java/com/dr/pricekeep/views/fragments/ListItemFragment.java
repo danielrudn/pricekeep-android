@@ -26,6 +26,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.dr.pricekeep.backend.FirebaseBackend;
+import com.dr.pricekeep.backend.PriceKeepBackend;
 import com.dr.pricekeep.presenters.ItemListPresenter;
 import com.dr.pricekeep.presenters.ItemListPresenterImpl;
 import com.dr.pricekeep.views.activities.MainActivity;
@@ -63,9 +65,9 @@ public class ListItemFragment extends Fragment {
         // set layout manager
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.getActivity());
         mRecyclerView.setLayoutManager(layoutManager);
-        mItemListPresenter.initializeItems();
         // show loading dialog while items load
         loadingDialog = ProgressDialog.show(this.getActivity(), "", "Loading...");
+        mItemListPresenter.initializeItems();
         return listItemView;
     }
 
@@ -83,8 +85,8 @@ public class ListItemFragment extends Fragment {
 
     // temporary
     public void handleFABClick() {
+        final PriceKeepBackend backend = FirebaseBackend.getInstance(this.getActivity());
         // add item
-        final Firebase mRef = new Firebase(MainActivity.FIREBASE_URL);
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getActivity());
         builder.setView(LayoutInflater.from(this.getActivity())
                     .inflate(R.layout.dialog_add_item, null))
@@ -99,8 +101,8 @@ public class ListItemFragment extends Fragment {
                         itemMap.put("url", url.getText().toString());
                         itemMap.put("startPrice", price.getText().toString());
                         itemMap.put("updateInterval", updateInterval.getSelectedItem().toString());
-                        itemMap.put("uid", mRef.getAuth().getUid());
-                        mRef.child("addQueue/" + UUID.randomUUID().toString()).setValue(itemMap);
+                        itemMap.put("uid", backend.getUser().getUUID());
+                        backend.getDatabase().addItem(itemMap);
                     }
                 })
                 .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

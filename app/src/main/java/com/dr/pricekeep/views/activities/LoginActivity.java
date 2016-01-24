@@ -12,30 +12,29 @@ import android.view.ViewAnimationUtils;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.dr.pricekeep.backend.FirebaseBackend;
+import com.dr.pricekeep.backend.PriceKeepAuthListener;
+import com.dr.pricekeep.backend.PriceKeepBackend;
 import com.dr.pricekeep.R;
+import com.dr.pricekeep.models.User;
 import com.dr.pricekeep.services.NotificationBroadcastReceiver;
-import com.firebase.client.AuthData;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 
 public class LoginActivity extends AppCompatActivity {
-
-    private Firebase mRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        mRef = new Firebase(MainActivity.FIREBASE_URL);
     }
     public void startLogin(final View view) {
         final EditText email = (EditText) findViewById(R.id.login_email);
         final EditText pass = (EditText) findViewById(R.id.login_password);
         final ProgressDialog progressDialog = ProgressDialog.show(this, "", "Authenticating...");
-        mRef.authWithPassword(email.getText().toString(), pass.getText().toString(),
-                new Firebase.AuthResultHandler() {
+        PriceKeepBackend priceKeepBackend = FirebaseBackend.getInstance(this);
+        priceKeepBackend.authWithPassword(email.getText().toString(), pass.getText().toString(),
+                new PriceKeepAuthListener() {
                     @Override
-                    public void onAuthenticated(AuthData authData) {
+                    public void onSuccess(User user) {
                         progressDialog.dismiss();
                         startActivity(new Intent(view.getContext(), MainActivity.class));
                         finish();
@@ -50,21 +49,21 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     @TargetApi(21)
-                    public void onAuthenticationError(FirebaseError firebaseError) {
+                    public void onFailed(Exception ex) {
                         progressDialog.dismiss();
                         TextView errorView = (TextView) findViewById(R.id.login_error);
                         errorView.setVisibility(View.VISIBLE);
-                        errorView.setText(firebaseError.getMessage());
+                        errorView.setText(ex.toString());
                         Animator anim = ViewAnimationUtils.createCircularReveal(errorView, view.getWidth()/2, view.getHeight()/2, 0, Math.max(view.getWidth(), view.getHeight()));
                         anim.start();
-                        switch (firebaseError.getCode()) {
+                    /*    switch (firebaseError.getCode()) {
                             case FirebaseError.INVALID_EMAIL:
                                 email.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_cancel_black_24dp, 0);
                                 break;
                             case FirebaseError.INVALID_PASSWORD:
                                 pass.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_cancel_black_24dp, 0);
                                 break;
-                        }
+                        } */
                     }
                 });
 
