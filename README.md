@@ -1,5 +1,5 @@
-# (ABANDONED) PriceKeep #
-## Work on this project has been paused to concentrate on school ##
+# PriceKeep #
+## Work on this project has been paused ##
 
 The front-end for the android application.
 
