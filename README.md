@@ -1,5 +1,5 @@
 # PriceKeep #
-## Work on this project has been paused ##
+## Work on this project has been paused. ##
 
 The front-end for the android application.
 
