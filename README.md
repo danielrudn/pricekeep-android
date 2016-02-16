@@ -12,4 +12,4 @@ The tracking and updating of the info is run on a backend server which relies on
 
 ### TEMPORARY ###
 Screenshot of the main UI and animations:
-![PriceKeep](https://gfycat.com/WellgroomedWanEuropeanpolecat)
+![PriceKeep](https://zippy.gfycat.com/WellgroomedWanEuropeanpolecat.webm)
