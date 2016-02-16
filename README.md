@@ -1,6 +1,6 @@
-# README #
+# (Abandoned) PriceKeep #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+The front-end for the android application.
 
 ### What is this repository for? ###
 
