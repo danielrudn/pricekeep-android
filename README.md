@@ -1,7 +1,6 @@
 # PriceKeep #
-## Work on this project has been paused. ##
 
-The front-end for the android application.
+The __(incomplete)__ front-end for the android application written using the MVP architecture and Firebase as a backend for authentication and storage.
 
 ### What does it do? ###
 
